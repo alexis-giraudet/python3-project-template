@@ -2,7 +2,6 @@
     "recommendations": [
         "ms-python.python",
         "charliermarsh.ruff",
-        "usernamehw.errorlens",
-        "tamasfe.even-better-toml"
+        "usernamehw.errorlens"
     ]
 }
