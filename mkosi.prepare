@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "build" ]
+then
+    pkg_src_name=$(mkosi-chroot env --chdir "$SRCDIR" dpkg-parsechangelog --show-field Source)
+    readonly pkg_src_name
+    mkosi-chroot env --chdir "$PACKAGEDIR" mk-build-deps "$SRCDIR/debian/control"
+    mkosi-install "$PACKAGEDIR/$pkg_src_name"-build-deps_*.deb
+fi

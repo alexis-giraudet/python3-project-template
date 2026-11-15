@@ -1,0 +1,67 @@
+#!/bin/sh
+
+set -e
+
+is_debug=0
+
+print_help() {
+    echo "Usage:"
+    echo "  $0 [-h] [-d]"
+    echo
+    echo "Description:"
+    echo "  Build Debian packages."
+    echo
+    echo "Options:"
+    echo "  -h    Print help and exit."
+    echo "  -d    Enable debug, keep build files and open a shell on exit."
+}
+
+while getopts hd args
+do
+    case $args in
+    h)
+        print_help
+        exit
+    ;;
+    d)
+        set -x
+        is_debug=1
+        trap sh EXIT
+        export DH_VERBOSE=1
+        export PYBUILD_VERBOSE=1
+    ;;
+    ?)
+        print_help
+        exit 1
+    ;;
+    esac
+done
+
+readonly is_debug
+pkg_src_name=$(mkosi-chroot env --chdir "$SRCDIR" dpkg-parsechangelog --show-field Source)
+readonly pkg_src_name
+pkg_src_version=$(mkosi-chroot env --chdir "$SRCDIR" dpkg-parsechangelog --show-field Version)
+readonly pkg_src_version
+work_dir=$BUILDDIR/$pkg_src_name/${pkg_src_name}_$pkg_src_version
+readonly work_dir
+
+mkdir -p "$work_dir"
+rsync --archive --delete --exclude .git/ "$SRCDIR/" "$work_dir"
+
+if ! grep native "$SRCDIR/debian/source/format"
+then
+    mkosi-chroot env --chdir "$work_dir" TAR_OPTIONS="--no-same-owner" origtargz --path "$SRCDIR" --unpack
+fi
+
+mkosi-chroot env --chdir "$work_dir" debchange --maintmaint --release ""
+mkosi-chroot env --chdir "$work_dir" debuild --preserve-envvar DH_VERBOSE --preserve-envvar PYBUILD_VERBOSE -us -uc
+
+if [ "$WITH_TESTS" != 0 ]
+then
+    mkosi-install "$work_dir/../"*.deb
+fi
+
+if [ "$is_debug" = 0 ]
+then
+    rm -rf "$work_dir"
+fi

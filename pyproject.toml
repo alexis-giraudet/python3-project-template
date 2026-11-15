@@ -6,14 +6,14 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "python-application-template"
-description = "Demo project description."
-version = "0.0.2"
-authors = [{ name = "Your Name" }]
+name = "python3-project-template"
+description = "Python 3 project template"
+dynamic = ["version"]
+authors = [{ name = "Alexis Giraudet", email = "alexis.giraudet@nav-timing.safrangroup.com" }]
 readme = "README.md"
 license = "GPL-3.0-or-later"
 keywords = ["template", "demo", "project"]
-dependencies = ["textual", "pyvisa", "pyvisa-py"]
+dependencies = ["textual", "python-libeconf"]
 requires-python = ">=3.10"
 # See https://pypi.org/classifiers/
 classifiers = [
@@ -23,22 +23,15 @@ classifiers = [
   "Programming Language :: Python :: 3",
 ]
 
-[tool.setuptools.package-data]
-pyvisapp = ["*.tcss"]
-
 [project.optional-dependencies]
-pyvisa-py-opt = ["pyvisa-py[serial,usb,psutil,hislip-discovery]"]
+test_requires = ["pytest"]
 
 [project.urls]
-Repository = "https://github.com/alexis-giraudet/python-application-template.git"
+Repository = "https://github.com/alexis-giraudet/python3-project-template.git"
 
 [project.scripts]
-hello-world = "hello_world:main"
-pyvisa-app = "pyvisapp.app:main"
-demo-textual = "demo_textual:main"
+myapplication-cli = "mynamespace.myproject.cli:main"
+myapplication-tui = "mynamespace.myproject.tui:main"
 
-# See https://docs.pytest.org/en/stable/explanation/goodpractices.html
-[tool.pytest.ini_options]
-addopts = ["--import-mode=importlib"]
-pythonpath = "src"
-testpaths = ["tests"]
+[tool.setuptools.dynamic]
+version = { attr = "mynamespace.myproject.__version__" }
