@@ -1,21 +1,40 @@
-# Python application template
+# Python 3 Project Template
 
 ## Overview
 
 ```
 .
+├── debian
+│   ├── changelog
+│   ├── control
+│   ├── copyright
+│   ├── python3-project-template.install
+│   ├── rules
+│   └── source
+│       └── format
 ├── LICENSE
+├── mkosi.build
+├── mkosi.builddir
+├── mkosi.conf
+├── mkosi.conf.d
+│   └── ubuntu.conf
+├── mkosi.prepare
 ├── pyproject.toml
 ├── README.md
 ├── src
-│   ├── demo_textual.py
-│   ├── hello_world.py
-│   └── pyvisapp
-│       ├── app.py
-│       ├── __init__.py
-│       └── style.tcss
-└── tests
-    └── test_demo.py
+│   └── mynamespace
+│       └── myproject
+│           ├── cli.py
+│           ├── __init__.py
+│           └── tui.py
+├── tests
+│   └── test_mytest.py
+└── usr
+    └── share
+        └── applications
+            └── myapplication-tui.desktop
+
+12 directories, 18 files
 ```
 
 ## Getting started
@@ -32,8 +51,8 @@ Install system dependencies, create/activate a Python virtual environment and in
 ```sh
 sudo apt update
 sudo apt install python3-pip python3-venv
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 python3 -m pip install --upgrade pip build whl2pyz pytest
 ```
 
@@ -44,7 +63,7 @@ python3 -m pip install --upgrade pip build whl2pyz pytest
 
 Install the application and make it editable (you don't have to reinstall it each time you edit the code):
 ```sh
-python3 -m install --editable .
+python3 -m pip install --editable .
 ```
 
 ## Test
@@ -56,23 +75,28 @@ pytest
 
 ## Build
 
-Build source and wheel packages:
+Build source and wheel packages (output to ./dist/ folder):
 ```sh
 python3 -m build
 ```
 
-Build portable zip app (output to ./bin folder):
+Build portable zip app (output to ./bin/ folder):
 ```sh
-whl2pyz --python "/usr/bin/env python3" --compress --wheels dist/*.whl
+whl2pyz --python "/usr/bin/env python3" --compress -- .
 ```
 
-## Publish
+# Debian package
 
-### GitHub
+## Build using mkosi
 
-### PyPI
+Build portable zip app (output to ./mkosi.builddir/ folder):
+```sh
+mkosi build
+# Build debug:
+mkosi build -- -d
+```
 
-## Reading
+# References
  - [Python Packaging User Guide](https://packaging.python.org/en/latest/#)
  - [setuptools](https://setuptools.pypa.io/en/latest/#)
  - [A Comprehensive Guide to Python Project Management and Packaging: Concepts Illustrated with uv – Part I](https://reinforcedknowledge.com/a-comprehensive-guide-to-python-project-management-and-packaging-concepts-illustrated-with-uv-part-i/)
@@ -80,3 +104,4 @@ whl2pyz --python "/usr/bin/env python3" --compress --wheels dist/*.whl
  - [PEP Index](https://peps.python.org/#)
  - [Black](https://black.readthedocs.io/en/stable/)
  - [zipapp - Manage executable Python zip archives](https://docs.python.org/fr/3/library/zipapp.html)
+ - [mkosi — Build Bespoke OS Images](https://github.com/systemd/mkosi)
