@@ -12,16 +12,8 @@ dynamic = ["version"]
 authors = [{ name = "Alexis Giraudet", email = "alexis.giraudet@nav-timing.safrangroup.com" }]
 readme = "README.md"
 license = "GPL-3.0-or-later"
-keywords = ["template", "demo", "project"]
-dependencies = ["textual", "python-libeconf"]
+dependencies = ["textual"]
 requires-python = ">=3.10"
-# See https://pypi.org/classifiers/
-classifiers = [
-  "Development Status :: 5 - Production/Stable",
-  "Environment :: Console",
-  "Intended Audience :: Developers",
-  "Programming Language :: Python :: 3",
-]
 
 [project.optional-dependencies]
 test_requires = ["pytest"]
