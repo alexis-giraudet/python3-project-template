@@ -89,7 +89,7 @@ whl2pyz --python "/usr/bin/env python3" --compress -- .
 
 ## Build using mkosi
 
-Build portable zip app (output to ./mkosi.builddir/ folder):
+Build Debian package (output to ./mkosi.builddir/ folder):
 ```sh
 mkosi build
 # Build debug:
