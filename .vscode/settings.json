@@ -7,5 +7,6 @@
         },
         "editor.defaultFormatter": "charliermarsh.ruff"
     },
-    "python.analysis.typeCheckingMode": "standard"
+    "python.analysis.typeCheckingMode": "standard",
+    "python.analysis.includeVenvInWorkspaceSymbols": true
 }
